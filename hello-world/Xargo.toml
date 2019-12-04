@@ -1,0 +1,2 @@
+[target.thumbv7m-unknown-linux-uclibc.dependencies.std]
+features = [ "panic-unwind" ]
