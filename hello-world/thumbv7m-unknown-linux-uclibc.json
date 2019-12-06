@@ -15,7 +15,14 @@
   "pre-link-args": {
     "gcc": [
       "-Wl,--as-needed",
-      "-Wl,-z,noexecstack"
+      "-Wl,-z,noexecstack",
+      "-L", "/home/vagrant/arm-2010q1/lib/gcc/arm-uclinuxeabi/4.4.1/thumb2/"
+    ]
+  },
+  "late-link-args": {
+    "gcc": [
+      "-mcpu=cortex-m3",
+      "-mthumb"
     ]
   },
   "relro-level": "full",
