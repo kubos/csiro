@@ -4,7 +4,7 @@
   "dynamic-linking": false,
   "env": "uclibc",
   "executables": true,
-  "has-elf-tls": true,
+  "has-elf-tls": false,
   "has-rpath": true,
   "linker-flavor": "gcc",
   "linker-is-gnu": true,
