@@ -1,2 +1,8 @@
 [target.thumbv7m-unknown-linux-uclibc.dependencies.std]
-features = [ "panic-unwind" ]
+stage = 0
+
+[target.thumbv7m-unknown-linux-uclibc.dependencies.compiler_builtins]
+stage = 1
+path = "/vagrant/repos/compiler-builtins"
+default-features = false
+features = [ ]

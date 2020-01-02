@@ -5,7 +5,7 @@
   "env": "uclibc",
   "executables": true,
   "has-elf-tls": false,
-  "has-rpath": true,
+  "has-rpath": false,
   "linker-flavor": "gcc",
   "linker-is-gnu": true,
   "llvm-target": "thumbv7m-unknown-linux-uclibc",
@@ -22,8 +22,11 @@
   },
   "late-link-args": {
     "gcc": [
-      "-mcpu=cortex-m3",
-      "-mthumb"
+      "-Wl,--start-group",
+      "-lc",
+      "-lpthread",
+      "-lgcc",
+      "-Wl,--end-group"
     ]
   },
   "relro-level": "full",
