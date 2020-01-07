@@ -6,3 +6,6 @@ stage = 1
 path = "/vagrant/repos/compiler-builtins"
 default-features = false
 features = [ ]
+
+[patch.crates-io]
+compiler_builtins = { path = "/vagrant/repos/compiler-builtins"}
