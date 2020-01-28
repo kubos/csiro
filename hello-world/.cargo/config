@@ -2,5 +2,5 @@
 target = "thumbv7m-unknown-linux-uclibc"
 
 [target.thumbv7m-unknown-linux-uclibc]
-linker = "/home/vagrant/arm-2010q1/bin/arm-uclinuxeabi-gcc"
-ar = "/home/vagrant/arm-2010q1/bin/arm-uclinuxeabi-ar"
+linker = "/home/vagrant/armv7m-m3-uclibc-2018/bin/arm-buildroot-uclinux-uclibcgnueabi-gcc"
+ar = "/home/vagrant/armv7m-m3-uclibc-2018/bin/arm-buildroot-uclinux-uclibcgnueabi-ar"
