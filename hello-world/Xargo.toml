@@ -1,6 +1,10 @@
 [target.thumbv7m-unknown-linux-uclibc.dependencies.std]
 stage = 0
 
+[target.thumbv7m-unknown-linux-uclibc.dependencies.panic_unwind]
+stage = 0
+path = "/vagrant/repos/rust/src/libpanic_unwind"
+
 [target.thumbv7m-unknown-linux-uclibc.dependencies.compiler_builtins]
 stage = 1
 path = "/vagrant/repos/compiler-builtins"
@@ -8,4 +12,5 @@ default-features = false
 features = [ ]
 
 [patch.crates-io]
-compiler_builtins = { path = "/vagrant/repos/compiler-builtins"}
+compiler_builtins = { path = "/vagrant/repos/compiler-builtins" }
+panic_unwind = { path = "/vagrant/repos/rust/src/libpanic_unwind" }
