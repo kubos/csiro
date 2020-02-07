@@ -8,7 +8,6 @@
   "features": "+no-movt,+32bit,+armv7-m,+thumb-mode,+thumb2,+m3,+strict-align",
   "has-elf-tls": false,
   "has-rpath": false,
-  "linker": "/home/vagrant/arm-2010q1/bin/arm-uclinuxeabi-gcc",
   "linker-flavor": "gcc",
   "linker-is-gnu": true,
   "llvm-target": "thumbv7m-unknown-linux-uclibc",
@@ -17,24 +16,16 @@
   "position-independent-executables": true,
   "pre-link-args": {
     "gcc": [
-      "-T", "elf2ld.ld.super",
       "-Wl,--as-needed",
       "-Wl,-z,noexecstack",
-      "-L", "/home/vagrant/arm-2010q1/arm-uclinuxeabi/libc/",
-      "-L", "/vagrant/linux-cortexm-1.14.3/A2F/root/usr/lib/",
+      "-L", "/home/vagrant/armv7m-m3-uclibc-2018/arm-buildroot-uclinux-uclibcgnueabi/sysroot/usr/lib/",
       "-mthumb",
       "-mcpu=cortex-m3"
     ]
   },
-  "late-link-args": {
+  "post-link-args": {
     "gcc": [
-      "-Wl,--start-group",
-      "-lgcc",
-      "-lm",
-      "-lrt",
-      "-lpthread",
-      "/vagrant/linux-cortexm-1.14.3/A2F/root/usr/lib/libc.a",
-      "-Wl,--end-group"
+      "-lgcc"
     ]
   },
   "relro-level": "full",
