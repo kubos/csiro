@@ -1,0 +1,8 @@
+[target.thumbv7m-unknown-linux-uclibc.dependencies.std]
+stage = 0
+
+[target.thumbv7m-unknown-linux-uclibc.dependencies.compiler_builtins]
+
+[patch.crates-io]
+compiler_builtins = { path = "/vagrant/csiro/dependencies/compiler-builtins" }
+libc = { path = "/vagrant/csiro/dependencies/libc" }
