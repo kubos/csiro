@@ -2,59 +2,68 @@
 
 These instructions detail how to setup a development environment for cross-compiling for the CSIRO board.
 
-## Folder Structure
+## Setting up a dev environment (from scratch)
 
-We're going to establish a standard folder structure to ensure that everything ends up in the correct place.
-
-`$DEV` - This should be a folder on your local dev computer which will contain all development dependencies 
-and will be shared with the development VM.
-
-## Setting up a dev vm (from scratch)
-
-Ideally you will already have a VM with the necessary rust components installed. If not then these initial instructions
-will guide you through the VM setup process.
+Ideally you will already have an environment (VM or local) with the necessary
+rust components installed. If not then these initial instructions will guide you
+through the setup process.
 
 ### Start with KubOS SDK
 
-We are going to use the [Kubos SDK](https://docs.kubos.com/1.20.0/sdk-docs/sdk-installing.html) as our starting point.
-Please take a look at the [SDK instructions](https://docs.kubos.com/1.20.0/sdk-docs/sdk-installing.html) and install
-the necessary dependencies like VirtualBox and Vagrant.
+We suggest using the Kubos SDK, a Vagrant-based VM, as a starting point.
+Please take a look at the
+[SDK instructions](https://docs.kubos.com/1.20.0/sdk-docs/sdk-installing.html) 
+and install the necessary dependencies like VirtualBox and Vagrant.
 
-    cd $DEV
+Using vagrant, we initialize and enter the VM with the following commands:
+
     vagrant init kubos/kubos-dev
-
-*At this point I would modify the VM in VirtualBox and give it at 
-least 8gb of ram and 2-4 cores to speed the compilation process.*
-
     vagrant up
-
-### Setup VM innards
-
     vagrant ssh
 
-#### Installing Rust tools
+### BYOE (Bring Your Own Environment)
+
+You may have your own VM you want to use, or just do everything in your host
+environment. If that is the case, then you'll want to have the following
+system dependencies installed in your environment of choice:
+
+- git
+- curl
+- Rust + Cargo (We suggest using [rustup](https://rustup.rs/))
+- gcc
+- pkg-config
+- libssl-dev or openssl-dev
+
+#### VM Modifications
+
+We suggest making the following modifications if using a VM environment:
+
+- Bump available system RAM to at least 8GB
+- Bump available processors to 2 or more
+- Setup shared folder for easily file sharing with the host (note: this will not work on Windows hosts)
+
+#### Installing Extra Rust tools
+
+This step is required whether you are starting with the Kubos SDK or your own environment:
 
     rustup default nightly-2020-01-28
     cargo install xargo
     rustup component add rust-src
 
-## Once the VM is setup (or if using pre-setup VM)
+#### Installing Bootlin Toolchain
 
-The following should all be done on the host machine, inside the $DEV folder to be shared with the VM.
+We are going to be using a uClibc toolchain from [Bootlin](https://toolchains.bootlin.com/).
+This toolchain just needs to be extracted into an easily accessible location.
 
-### Obtain uClibc toolchain
+    wget https://toolchains.bootlin.com/downloads/releases/toolchains/armv7m/tarballs/armv7m--uclibc--stable-2018.11-1.tar.bz2 \
+    && tar -xvjf armv7m--uclibc--stable-2018.11-1.tar.bz2 \
+    && rm armv7m--uclibc--stable-2018.11-1.tar.bz2
 
-    cd $DEV
-    wget https://toolchains.bootlin.com/downloads/releases/toolchains/armv7m/tarballs/armv7m--uclibc--stable-2018.11-1.tar.bz2 && tar -xvjf armv7m--uclibc--stable-2018.11-1.tar.bz2 && rm armv7m--uclibc--stable-2018.11-1.tar.bz2
+#### Obtain patched dependencies
 
-You should now have the folder `$DEV/armv7m--uclibc--stable-2018.11-1` containing all the toolchain folders/files. 
+Part of the special Rust setup is patched versions of certain Rust crates. A git repo
+has been setup with git submodules pointing to the patched dependency repos. 
 
-### Obtain patched dependencies
-
-A git repo is already setup with git submodules pointing to the patched dependency
-repos. 
-
-    cd $DEV
     git clone https://github.com/kubos/csiro
     cd csiro
 
@@ -66,49 +75,59 @@ repos.
     cd dependencies/rust
     git submodule init
     git submodule update
-    cd $DEV
+    cd /vagrant
 
-Your folder structure should now look like this:
-
-    $DEV                                    - Folder shared with VM
-     |-- armv7m--uclibc--stable-2018.11-1   - The GCC cross-compiling toolchain
-     |-- csiro                              - Contents of https://github.com/kubos/csiro
-          |-- dependencies                  - Patched Rust dependencies
-          |-- project-template              - Initial Project Template
-          |-- hello-world
-          |-- llvm-test
-
-*Note: The hello-world and llvm-test folders are artfiacts of the compiler bring-up process and can be ignored.*
+*Note: The hello-world and llvm-test folders in the csiro folder are artfiacts of 
+the compiler bring-up process and can be ignored.*
 
 ### Setup new project
 
 A template project is provided in the `project-template` folder.
 This template is already setup with the necessary configuration files.
-These files assume that the toolchain and `csiro` repo exist in a shared 
-folder mounted at `/vagrant` in the VM. 
 
-These instructions are assumed to be executed from within the VM, 
-so you may need to run `vagrant ssh` or jump in via your virtual machine manager's gui.
+These files currently assume that the toolchain and `csiro` repo exist inside of the
+folder `/vagrant` (the default shared folder of the Kubos SDK).
 
-    cd /vagrant
-    cp -a /vagrant/csiro/project-template /vagrant/new-project
-    cd /vagrant/new-project
+
+    cd /path/to/csiro
+    cp -a project-template /path/to/new-project
+    cd /path/to/new-project
 
 This project is setup as a [Cargo workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html). 
-This is done to simplify the configuration, as all the cross-compiling config only needs to exist once in 
-the root of the workspace.
+This is done to simplify the configuration, as all the cross-compiling config 
+only needs to exist once in the root of the workspace.
 
 Actual library or binary projects are created inside of the workspace and added
 to the `members` variable in the `Cargo.toml`.
 
-### Building projects
+#### Project Configuration
 
-Building projects should be done inside of the VM, so you may need to run `vagrant ssh`
-or jump in via your virtual machine manager's gui.
+The project template comes with the following configuration files. These files
+may need adjusting depending on the location of the cross-compiling toolchain
+and csiro/dependencies folder.
+
+- **thumbv7m-unknown-linux-uclibc.json** - 
+    A target specification for the Rust cross compiler. This file has one 
+    reference to the toolchain which may need to be updated.
+- **Cargo.toml** -
+    The root workspace configuration file. This file has multiple references to the folders
+    under csiro/dependecies which may need to be updated. This file also has a `members`
+    variable which must contain references to all projects in the workspace.
+- **Xargo.toml** -
+    A cross-compiling configuration file. This file has two references to folders under
+    csiro/dependecies which may need to be updated.
+- **env.sh** -
+    A script to set environment variables. This file has references to the toolchain
+    and folders under csiro/dependencies which may need to be updated.
+- **.cargo/config** -
+    A Rust/Cargo configuration file. This file has two references to the toolchain
+    which may need to be updated.
+
+### Building projects
 
 These instructions are assumed to be executed from within the root project folder:
 
-    cd /vagrant/new-project
+    cd /path/to/new-project
 
 The `env.sh` script needs to be sourced to setup necessary environment variables:
 
