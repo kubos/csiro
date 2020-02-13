@@ -82,6 +82,13 @@ has been setup with git submodules pointing to the patched dependency repos.
 *Note: The hello-world and llvm-test folders in the csiro folder are artifacts of 
 the compiler bring-up process and can be ignored.*
 
+#### Sqlite Dependency
+
+Certain Kubos packages have a dependency on sqlite. A copy of the cross-compiled
+sqlite library is supplied at `csiro/dependencies/libsqlite3.a`. This file will need to
+be copied over to `/path/to/armv7m--uclibc--stable-2018.11-1/arm-buildroot-uclinux-uclibcgnueabi/sysroot/usr/lib`
+before cross-compiling any projects with a sqlite dependency.
+
 ### Setup new project
 
 A template project is provided in the `project-template` folder. This template is 
