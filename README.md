@@ -40,7 +40,8 @@ We suggest making the following modifications if using a VM environment:
 
 - Bump available system RAM to at least 8GB
 - Bump available processors to 2 or more
-- Setup shared folder for easily file sharing with the host (note: this will not work on Windows hosts)
+- [Setup shared folder](https://docs.kubos.com/1.20.0/sdk-docs/sdk-installing.html#mount-directory)
+  for easily file sharing with the host (note: this will not work on Windows hosts)
 
 #### Installing Extra Rust tools
 
@@ -59,6 +60,9 @@ This toolchain just needs to be extracted into an easily accessible location.
     && tar -xvjf armv7m--uclibc--stable-2018.11-1.tar.bz2 \
     && rm armv7m--uclibc--stable-2018.11-1.tar.bz2
 
+*Note: If you are on a Windows host and using a VM, then the toolchain cannot be
+placed in a shared folder due to symlink issues*
+
 #### Obtain patched dependencies
 
 Part of the special Rust setup is patched versions of certain Rust crates. A git repo
@@ -67,44 +71,42 @@ has been setup with git submodules pointing to the patched dependency repos.
     git clone https://github.com/kubos/csiro
     cd csiro
 
-*Note: These commands might take some time to run*
-
+*Note: These commands might take some time to run.*
 
     git submodule init
     git submodule update
     cd dependencies/rust
     git submodule init
     git submodule update
-    cd /vagrant
 
-*Note: The hello-world and llvm-test folders in the csiro folder are artfiacts of 
+*Note: The hello-world and llvm-test folders in the csiro folder are artifacts of 
 the compiler bring-up process and can be ignored.*
 
 ### Setup new project
 
-A template project is provided in the `project-template` folder.
-This template is already setup with the necessary configuration files.
-
-These files currently assume that the toolchain and `csiro` repo exist inside of the
-folder `/vagrant` (the default shared folder of the Kubos SDK).
-
+A template project is provided in the `project-template` folder. This template is 
+already setup with the necessary configuration files and just needs to be copied
+to a new location.
 
     cd /path/to/csiro
     cp -a project-template /path/to/new-project
     cd /path/to/new-project
+
+*Note: The new-project folder must exist outside of the csiro repo folder.*
 
 This project is setup as a [Cargo workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html). 
 This is done to simplify the configuration, as all the cross-compiling config 
 only needs to exist once in the root of the workspace.
 
 Actual library or binary projects are created inside of the workspace and added
-to the `members` variable in the `Cargo.toml`.
+to the `members` variable in the root `Cargo.toml` file.
 
 #### Project Configuration
 
-The project template comes with the following configuration files. These files
-may need adjusting depending on the location of the cross-compiling toolchain
-and csiro/dependencies folder.
+The template project comes with the following configuration files. These files currently
+assume that the toolchain and `csiro` repo exist inside of the folder `/vagrant`
+(the default shared folder of the Kubos SDK). These files will need adjusting if your
+toolchain and `csiro/dependencies` folder exist in another location.
 
 - **thumbv7m-unknown-linux-uclibc.json** - 
     A target specification for the Rust cross compiler. This file has one 
@@ -122,6 +124,9 @@ and csiro/dependencies folder.
 - **.cargo/config** -
     A Rust/Cargo configuration file. This file has two references to the toolchain
     which may need to be updated.
+
+The template project also comes with a `hello-world` folder which is just a simple
+Rust "Hello World" binary package. 
 
 ### Building projects
 
