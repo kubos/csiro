@@ -47,7 +47,7 @@ We suggest making the following modifications if using a VM environment:
 
 This step is required whether you are starting with the Kubos SDK or your own environment:
 
-    rustup default nightly-2020-01-28
+    rustup default nightly-2020-01-29
     cargo install xargo
     rustup component add rust-src
 
