@@ -1,0 +1,6 @@
+[build]
+target = "thumbv7m-unknown-linux-uclibc"
+
+[target.thumbv7m-unknown-linux-uclibc]
+linker = "/vagrant/armv7m--uclibc--stable-2018.11-1/bin/arm-buildroot-uclinux-uclibcgnueabi-gcc"
+ar = "/vagrant/armv7m--uclibc--stable-2018.11-1/bin/arm-buildroot-uclinux-uclibcgnueabi-ar"

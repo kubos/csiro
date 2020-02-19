@@ -1,0 +1,28 @@
+[submodule "dependencies/backtrace-rs"]
+	path = dependencies/backtrace-rs
+	url = https://github.com/kubos/backtrace-rs
+	branch = uclibc-fixes
+[submodule "dependencies/libc"]
+	path = dependencies/libc
+	url = https://github.com/kubos/libc
+	branch = uclibc-fixes
+[submodule "dependencies/compiler-builtins"]
+	path = dependencies/compiler-builtins
+	url = https://github.com/kubos/compiler-builtins
+	branch = fix-thumbv7m-none-uclibc
+[submodule "dependencies/mio"]
+	path = dependencies/mio
+	url = https://github.com/kubos/mio
+	branch = uclibc-fixes
+[submodule "dependencies/filetime"]
+	path = dependencies/filetime
+	url = https://github.com/kubos/filetime
+	branch = uclibc-funtimes-fix
+[submodule "dependencies/nix"]
+	path = dependencies/nix
+	url = https://github.com/kubos/nix
+	branch = uclibc-fix
+[submodule "dependencies/rust"]
+	path = dependencies/rust
+	url = https://github.com/kubos/rust
+	branch = thumbv7m-uclibc-port

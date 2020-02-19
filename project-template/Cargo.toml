@@ -1,0 +1,22 @@
+[workspace]
+members = [
+    "hello-world"
+]
+
+[profile.release]
+lto = true
+opt-level = 1
+panic = "abort"
+codegen-units = 1
+
+[profile.dev]
+panic = "abort"
+lto = true
+codegen-units = 1
+
+[patch.crates-io]
+nix = { path = "/vagrant/csiro/dependencies/nix" }
+libc = { path = "/vagrant/csiro/dependencies/libc" }
+backtrace = { path = "/vagrant/csiro/dependencies/backtrace-rs" }
+mio = { path = "/vagrant/csiro/dependencies/mio" }
+filetime = { path = "/vagrant/csiro/dependencies/filetime" }
