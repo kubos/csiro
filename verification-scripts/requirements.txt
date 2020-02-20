@@ -1,0 +1,2 @@
+git://github.com/kubos/kubos.git#egg=app-api
+pytest
