@@ -1,2 +1,3 @@
-git://github.com/kubos/kubos.git#egg=app-api
+git+https://github.com/kubos/kubos.git#egg=app-api&subdirectory=apis/app-api/python
+requests
 pytest
