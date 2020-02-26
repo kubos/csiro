@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 20120 Kubos Corporation
+# Copyright 2020 Kubos Corporation
 # Licensed under the Apache License, Version 2.0
 # See LICENSE file for details.
 
@@ -12,11 +12,6 @@ Integration test for exercising the app service.
 """
 
 SERVICE = "app-service"
-
-@pytest.fixture
-def service_api():
-    service_api = app_api.Services("config.toml")
-    yield service_api
 
 def test_ping(service_api):
     service_api.query(
