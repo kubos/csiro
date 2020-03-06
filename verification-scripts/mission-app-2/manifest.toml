@@ -1,0 +1,4 @@
+name = "test-mission-app-2"
+executable = "test.sh"
+version = "0.1.0"
+author = "Ryan Plauche <ryan@kubos.com>"
