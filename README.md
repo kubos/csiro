@@ -1,6 +1,6 @@
-# CSIRO Dev Instructions
+# uClinux Dev Instructions
 
-These instructions detail how to setup a development environment for cross-compiling for the CSIRO board.
+These instructions detail how to setup a development environment for cross-compiling for the uClinux environment.
 
 ## Setting up a dev environment (from scratch)
 
@@ -79,13 +79,13 @@ has been setup with git submodules pointing to the patched dependency repos.
     git submodule init
     git submodule update
 
-*Note: The hello-world and llvm-test folders in the csiro folder are artifacts of 
+*Note: The hello-world and llvm-test folders in the uclinux-port folder are artifacts of 
 the compiler bring-up process and can be ignored.*
 
 #### Sqlite Dependency
 
 Certain Kubos packages have a dependency on sqlite. A copy of the cross-compiled
-sqlite library is supplied at `csiro/dependencies/libsqlite3.a`. This file will need to
+sqlite library is supplied at `uclinux-port/dependencies/libsqlite3.a`. This file will need to
 be copied over to `/path/to/armv7m--uclibc--stable-2018.11-1/arm-buildroot-uclinux-uclibcgnueabi/sysroot/usr/lib`
 before cross-compiling any projects with a sqlite dependency.
 
@@ -95,11 +95,11 @@ A template project is provided in the `project-template` folder. This template i
 already setup with the necessary configuration files and just needs to be copied
 to a new location.
 
-    cd /path/to/csiro
+    cd /path/to/uclinux-port
     cp -a project-template /path/to/new-project
     cd /path/to/new-project
 
-*Note: The new-project folder must exist outside of the csiro repo folder.*
+*Note: The new-project folder must exist outside of the uclinux-port repo folder.*
 
 This project is setup as a [Cargo workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html). 
 This is done to simplify the configuration, as all the cross-compiling config 
@@ -111,23 +111,23 @@ to the `members` variable in the root `Cargo.toml` file.
 #### Project Configuration
 
 The template project comes with the following configuration files. These files currently
-assume that the toolchain and `csiro` repo exist inside of the folder `/vagrant`
+assume that the toolchain and `uclinux-port` repo exist inside of the folder `/vagrant`
 (the default shared folder of the Kubos SDK). These files will need adjusting if your
-toolchain and `csiro/dependencies` folder exist in another location.
+toolchain and `uclinux-port/dependencies` folder exist in another location.
 
 - **thumbv7m-unknown-linux-uclibc.json** - 
     A target specification for the Rust cross compiler. This file has one 
     reference to the toolchain which may need to be updated.
 - **Cargo.toml** -
     The root workspace configuration file. This file has multiple references to the folders
-    under csiro/dependecies which may need to be updated. This file also has a `members`
+    under uclinux-port/dependecies which may need to be updated. This file also has a `members`
     variable which must contain references to all projects in the workspace.
 - **Xargo.toml** -
     A cross-compiling configuration file. This file has two references to folders under
-    csiro/dependecies which may need to be updated.
+    uclinux-port/dependecies which may need to be updated.
 - **env.sh** -
     A script to set environment variables. This file has references to the toolchain
-    and folders under csiro/dependencies which may need to be updated.
+    and folders under uclinux-port/dependencies which may need to be updated.
 - **.cargo/config** -
     A Rust/Cargo configuration file. This file has two references to the toolchain
     which may need to be updated.
