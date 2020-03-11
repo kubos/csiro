@@ -68,8 +68,8 @@ placed in a shared folder due to symlink issues*
 Part of the special Rust setup is patched versions of certain Rust crates. A git repo
 has been setup with git submodules pointing to the patched dependency repos. 
 
-    git clone https://github.com/kubos/csiro
-    cd csiro
+    git clone https://github.com/kubos/uclinux-port
+    cd uclinux-port
 
 *Note: These commands might take some time to run.*
 
