@@ -1,0 +1,10 @@
+{
+    "tasks": [{
+        "description": "Test App",
+        "delay": "0s",
+        "period": "10s",
+        "app": {
+            "name": "test-mission-app"
+        }
+    }]
+}
